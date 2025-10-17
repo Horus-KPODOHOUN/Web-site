@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos - Paroisse Saint François de Sales - Okedama</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./src/styles.css">
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="container">
+                <div class="contact-info">
+                    <span><i class="fas fa-phone"></i>+229 01 95 87 79 79</span>
+                    <span><i class="fas fa-envelope"></i> paroisse.okedama@diocese.bj</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Okedama, Cotonou</span>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <div class="container nav-container">
+                <div class="logo">
+                    <i class="fas fa-church"></i>
+                    <span>Paroisse St François de Sales</span>
+                </div>
+                
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="apropos.html" class="active">À Propos</a></li>
+                    <li><a href="index.html#actualites">Actualités</a></li>
+                    <li><a href="index.html#evenements">Événements</a></li>
+                    <li><a href="index.html#galerie">Galerie</a></li>
+                    <li><button class="calendar-btn" onclick="openCalendar()"><i class="fas fa-calendar-alt"></i> Calendrier</button></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section class="about-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Notre Histoire et Notre Mission</h1>
+                <p>Découvrez la riche histoire de notre paroisse et notre engagement à servir la communauté d'Okedama</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="histoire-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Notre Histoire</h2>
+                <p>Plus de 50 ans au service de la communauté chrétienne d'Okedama</p>
+            </div>
+            
+            <div class="histoire-content">
+                <div class="histoire-text">
+                    <div class="histoire-item">
+                        <div class="histoire-icon">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <div class="histoire-details">
+                            <h3>Les Débuts (1970-1980)</h3>
+                            <p>La paroisse Saint François de Sales a été fondée en 1972 par le Père Jean-Baptiste Dossou, répondant aux besoins spirituels croissants de la communauté d'Okedama. Les premières célébrations eurent lieu dans une modeste chapelle en bois.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="histoire-item">
+                        <div class="histoire-icon">
+                            <i class="fas fa-church"></i>
+                        </div>
+                        <div class="histoire-details">
+                            <h3>Construction de l'Église (1985)</h3>
+                            <p>Grâce à la générosité des fidèles et l'appui du diocèse, notre église actuelle fut construite et consacrée en 1985 par Monseigneur Isidore de Souza. Ce fut un moment historique pour notre communauté.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="histoire-item">
+                        <div class="histoire-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="histoire-details">
+                            <h3>Croissance et Développement (1990-2010)</h3>
+                            <p>La paroisse n'a cessé de grandir, avec la création de nombreuses associations et mouvements : chorale, légion de Marie, catéchisme, groupes de jeunes, et actions caritatives.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="histoire-item">
+                        <div class="histoire-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="histoire-details">
+                            <h3>Époque Contemporaine</h3>
+                            <p>Aujourd'hui, sous la guidance du Père Michel Adékambi, notre paroisse continue de rayonner dans tout Okedama, accueillant chaque semaine des centaines de fidèles pour célébrer leur foi.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="histoire-image">
+                    <img src="https://images.unsplash.com/photo-1519491050282-cf00c82424b4?w=600" alt="Notre église historique">
+                    <div class="image-caption">
+                        <p>Notre belle église Saint François de Sales, cœur de notre communauté depuis 1985</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="saint-section">
+        <div class="container">
+            <div class="saint-content">
+                <div class="saint-image">
+                    <img src="https://images.unsplash.com/photo-1519491050282-cf00c82424b4?w=600" alt="Notre église historique">
+                </div>
+                <div class="saint-text">
+                    <h2>Saint François de Sales</h2>
+                    <h3>Notre Saint Patron</h3>
+                    <p><strong>« Rien de fort que l'amour, rien de doux que l'amour »</strong></p>
+                    <p>Docteur de l'Église (1567-1622), François de Sales est connu pour sa douceur, sa patience et son amour de Dieu et du prochain. Évêque de Genève, il fut un grand prédicateur et écrivain spirituel.</p>
+                    
+                    <div class="saint-qualities">
+                        <div class="quality">
+                            <i class="fas fa-dove"></i>
+                            <h4>Douceur</h4>
+                            <p>Il enseignait que la douceur est la force des forts</p>
+                        </div>
+                        <div class="quality">
+                            <i class="fas fa-book"></i>
+                            <h4>Éducation</h4>
+                            <p>Grand promoteur de l'éducation et de la formation</p>
+                        </div>
+                        <div class="quality">
+                            <i class="fas fa-hands-helping"></i>
+                            <h4>Charité</h4>
+                            <p>Dévoué au service des pauvres et des malades</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Équipe Paroissiale
+    <section class="equipe-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Notre Équipe Paroissiale</h2>
+                <p>Découvrez les personnes qui font vivre notre communauté</p>
+            </div>
+            
+            <div class="equipe-grid">
+                <div class="membre-card">
+                    <div class="membre-photo">
+                        <img src="https://images.unsplash.com/photo-1580301762386-5b5d48e7b84d?w=300" alt="Père Michel Adékambi">
+                    </div>
+                    <div class="membre-info">
+                        <h3>Père Michel Adékambi</h3>
+                        <p class="role">Curé de la Paroisse</p>
+                        <p>Ordonné prêtre en 1998, le Père Michel sert notre communauté depuis 2015 avec dévouement et passion.</p>
+                        <div class="membre-contact">
+                            <span><i class="fas fa-envelope"></i> pere.michel@diocese.bj</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="membre-card">
+                    <div class="membre-photo">
+                        <img src="https://images.unsplash.com/photo-1548142813-c348350df52b?w=300" alt="Sœur Marie-Claire">
+                    </div>
+                    <div class="membre-info">
+                        <h3>Sœur Marie-Claire</h3>
+                        <p class="role">Responsable Catéchisme</p>
+                        <p>Religieuse de la Congrégation des Sœurs de la Charité, elle coordonne le catéchisme depuis 10 ans.</p>
+                        <div class="membre-contact">
+                            <span><i class="fas fa-phone"></i> +229 97 85 64 32</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="membre-card">
+                    <div class="membre-photo">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300" alt="M. Pascal Dossou">
+                    </div>
+                    <div class="membre-info">
+                        <h3>M. Pascal Dossou</h3>
+                        <p class="role">Président du Conseil Pastoral</p>
+                        <p>Membre de la paroisse depuis 30 ans, il coordonne les activités pastorales et les commissions.</p>
+                        <div class="membre-contact">
+                            <span><i class="fas fa-envelope"></i> pascal.dossou@paroisse.bj</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="membre-card">
+                    <div class="membre-photo">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300" alt="Mme Chantal Gbedo">
+                    </div>
+                    <div class="membre-info">
+                        <h3>Mme Chantal Gbedo</h3>
+                        <p class="role">Responsable Caritas</p>
+                        <p>Elle coordonne les actions caritatives et la solidarité envers les plus démunis de notre communauté.</p>
+                        <div class="membre-contact">
+                            <span><i class="fas fa-phone"></i> +229 95 47 85 96</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+    <section class="projets-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nos Projets en Cours</h2>
+                <p>Des initiatives pour faire grandir notre communauté</p>
+            </div>
+            
+            <div class="projets-grid">
+                <div class="projet-card">
+                    <div class="projet-image">
+                        <img src="./img/jeune.jpeg" alt="Centre des jeunes">
+                    </div>
+                    <div class="projet-content">
+                        <h3>Centre des Jeunes</h3>
+                        <p>Construction d'un espace dédié aux activités des jeunes de la paroisse : formation, loisirs, rencontres.</p>
+                        <div class="projet-statut">
+                            <span class="statut encours">En cours</span>
+                            <span class="progression">65% collectés</span>
+                        </div>
+                        <button class="btn" onclick="openModal('donModal')">Soutenir ce projet</button>
+                    </div>
+                </div>
+                
+                <div class="projet-card">
+                    <div class="projet-image">
+                        <img src="./img/bible.jpeg" alt="Bibliothèque paroissiale">
+                    </div>
+                    <div class="projet-content">
+                        <h3>Bibliothèque Paroissiale</h3>
+                        <p>Création d'un espace de lecture et de documentation spirituelle ouvert à tous les fidèles.</p>
+                        <div class="projet-statut">
+                            <span class="statut planning">En planification</span>
+                            <span class="progression">25% collectés</span>
+                        </div>
+                        <button class="btn" onclick="openModal('donModal')">Soutenir ce projet</button>
+                    </div>
+                </div>
+                
+                <div class="projet-card">
+                    <div class="projet-image">
+                        <img src="./img/jardin.jpeg" alt="Bibliothèque paroissiale">
+                                </div>
+                    <div class="projet-content">
+                        <h3>Jardin Méditatif</h3>
+                        <p>Aménagement d'un espace vert pour la prière personnelle et la méditation en plein air.</p>
+                        <div class="projet-statut">
+                            <span class="statut termine">Terminé</span>
+                            <span class="progression">100% collectés</span>
+                        </div>
+                        <button class="btn" onclick="location.href='#galerie'">Voir le résultat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<br><br>
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h3><i class="fas fa-envelope-open-text"></i> Restez Connectés</h3>
+                <p>Inscrivez-vous à notre newsletter pour recevoir les actualités de la paroisse directement dans votre boîte mail</p>
+                <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                    <input type="email" placeholder="Votre adresse email" required>
+                    <button type="submit"><i class="fas fa-paper-plane"></i> S'abonner</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Paroisse Saint François de Sales</h3>
+                    <p>Située à Okedama, notre paroisse est un lieu d'accueil, de prière et de communion fraternelle. Nous sommes heureux de vous accueillir dans notre communauté.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Horaires des Messes</h3>
+                    <div class="horaires-messe">
+                        <p><strong>Dimanche :</strong> 7h00, 9h00, 11h00</p>
+                        <p><strong>Semaine :</strong> 6h30 (Lun, Mer, Ven)</p>
+                        <p><strong>Samedi :</strong> 18h00 (messe anticipée)</p>
+                        <p><strong>Adoration :</strong> Jeudi 17h00-18h00</p>
+                        <p><strong>Confession :</strong> Samedi 16h00-17h30</p>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Liens Rapides</h3>
+                    <a href="index.html"><i class="fas fa-chevron-right"></i> Accueil</a>
+                    <a href="apropos.html"><i class="fas fa-chevron-right"></i> À Propos</a>
+                    <a href="index.html#actualites"><i class="fas fa-chevron-right"></i> Actualités</a>
+                    <a href="index.html#evenements"><i class="fas fa-chevron-right"></i> Événements</a>
+                    <a href="#" onclick="openModal('donModal'); return false;"><i class="fas fa-chevron-right"></i> Faire un Don</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Okedama, Parakou<br>République du Bénin</p>
+                    <p><i class="fas fa-phone"></i> +229 01 95 87 79 79</p>
+                    <p><i class="fas fa-envelope"></i> paroisse.okedama@diocese.bj</p>
+                    <p><i class="fas fa-clock"></i> <strong>Bureau paroissial :</strong><br>Lun-Ven : 9h00-12h00 / 15h00-17h00<br>Sam : 9h00-12h00</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Paroisse Saint François de Sales d'Okedama. Tous droits réservés.</p>
+                <p>Que Dieu vous bénisse et vous garde dans son amour</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="donModal" class="modal">
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            const email = e.target.querySelector('input[type="email"]').value;
+            alert(`Merci pour votre inscription!\n\nVous recevrez désormais nos actualités à l'adresse: ${email}\n\nQue Dieu vous bénisse!`);
+            e.target.reset();
+        }
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.histoire-item, .membre-card, .valeur-card, .projet-card, .chiffre-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        console.log('🙏 Page À Propos - Paroisse Saint François de Sales');
+    </script>
+
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: var(--white);
+            padding: 120px 0 80px;
+            text-align: center;
+            margin-top: -50px;
+        }
+
+        .hero-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.3em;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .histoire-section {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+
+        .histoire-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .histoire-item {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        .histoire-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.8em;
+            flex-shrink: 0;
+        }
+
+        .histoire-details h3 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .histoire-image {
+            position: sticky;
+            top: 100px;
+        }
+
+        .histoire-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+        }
+
+        .saint-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .saint-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .saint-image img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .saint-text h2 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .saint-text h3 {
+            color: var(--secondary-color);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+
+        .saint-qualities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .quality {
+            text-align: center;
+            padding: 25px 15px;
+            background: var(--light-color);
+            border-radius: 10px;
+        }
+
+        .quality i {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .quality h4 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+
+        .equipe-section {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+
+        .equipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .membre-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .membre-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .membre-photo img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .membre-info {
+            padding: 25px;
+        }
+
+        .membre-info h3 {
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 1.4em;
+        }
+
+        .role {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .membre-contact {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .membre-contact span {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .valeurs-section {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .valeurs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .valeur-card {
+            text-align: center;
+            padding: 40px 25px;
+            background: var(--light-color);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .valeur-card:hover {
+            transform: translateY(-5px);
+            background: var(--white);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .valeur-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2em;
+            margin: 0 auto 20px;
+        }
+
+        .valeur-card h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .projets-section {
+            padding: 80px 0;
+            background: var(--light-color);
+        }
+
+        .projets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .projet-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .projet-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .projet-content {
+            padding: 25px;
+        }
+
+        .projet-content h3 {
+            color: var(--dark-color);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .projet-statut {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .statut {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .statut.encours {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .statut.planning {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .statut.termine {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .progression {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .chiffres-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: var(--white);
+        }
+
+        .chiffres-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            text-align: center;
+        }
+
+        .chiffre-valeur {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .chiffre-label {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 968px) {
+            .histoire-content,
+            .saint-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .histoire-image {
+                position: static;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2em;
+            }
+
+            .saint-text h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .histoire-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .chiffre-valeur {
+                font-size: 2.5em;
+            }
+
+            .projets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>     
