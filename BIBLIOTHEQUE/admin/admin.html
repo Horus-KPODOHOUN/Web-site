@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - BiblioTech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+        
+       /* Styles généraux */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #163D4C;
+            color: white;
+            height: 100vh;
+            position: fixed;
+            overflow-y: auto;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo h2 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+        
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: #F8B540;
+            color: #163D4C;
+        }
+        
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .page-title {
+            color: #163D4C;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Sections */
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section h2 {
+            color: #163D4C;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #F8B540;
+        }
+        
+        /* Dashboard Cards */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-left: 4px solid #F8B540;
+        }
+        
+        .card h3 {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .card .number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #163D4C;
+            margin-bottom: 5px;
+        }
+        
+        .card p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        table th, table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table th {
+            background-color: #f8f9fa;
+            color: #163D4C;
+            font-weight: 600;
+        }
+        
+        table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #163D4C;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #F8B540;
+        }
+        
+        /* Boutons généraux */
+        .btn {
+            background: #163D4C;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            transition: all 0.3s;
+            margin-right: 10px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .btn:hover {
+            background: #0f2a35;
+        }
+        
+        .btn-primary {
+            background: #F8B540;
+            color: #163D4C;
+        }
+        
+        .btn-primary:hover {
+            background: #e6a02e;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+        }
+        
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+        
+        .btn-logout {
+            background: #e74c3c;
+        }
+        
+        .btn-logout:hover {
+            background: #c0392b;
+        }
+        
+        /* Styles spécifiques pour les boutons d'ajout */
+        .btn-submit {
+            background: linear-gradient(135deg, #F8B540 0%, #e6a02e 100%);
+            color: #163D4C;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(248, 181, 64, 0.3);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(248, 181, 64, 0.4);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .btn-submit i {
+            font-size: 18px;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Popup Styles */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .popup {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .popup-overlay.active .popup {
+            transform: translateY(0);
+        }
+        
+        .popup-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .popup-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        
+        .popup-icon.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .popup-icon.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .popup-icon.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .popup-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #163D4C;
+        }
+        
+        .popup-content {
+            margin-bottom: 25px;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .popup-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .popup-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .popup-btn.confirm {
+            background: #163D4C;
+            color: white;
+        }
+        
+        .popup-btn.confirm:hover {
+            background: #0f2a35;
+        }
+        
+        .popup-btn.cancel {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .popup-btn.cancel:hover {
+            background: #5a6268;
+        }
+        
+        /* Toast de notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            z-index: 999;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .toast-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+        
+        .toast-icon.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .toast-icon.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #163D4C;
+        }
+        
+        .toast-message {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #6c757d;
+            margin-left: 10px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .sidebar .menu-text {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-menu {
+                margin-top: 10px;
+            }
+            
+            .popup {
+                width: 95%;
+                padding: 20px;
+            }
+            
+            .popup-actions {
+                flex-direction: column;
+            }
+            
+            .popup-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .form-actions {
+                justify-content: center;
+            }
+            
+            .btn-submit {
+                width: 100%;
+                padding: 16px 20px;
+            }
+        }
+
+        /* Styles pour les livres */
+        .book-cover-preview {
+            width: 100px;
+            height: 150px;
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .book-cover-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .book-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Styles pour l'upload d'image */
+        .image-upload-container {
+            margin-bottom: 20px;
+        }
+        
+        .image-preview {
+            width: 150px;
+            height: 200px;
+            background: #f8f9fa;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-preview .placeholder {
+            color: #6c757d;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .image-preview .placeholder i {
+            font-size: 40px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .upload-btn {
+            background: #163D4C;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #0f2a35;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .image-preview.has-image .remove-image {
+            display: block;
+        }
+        
+        .upload-info {
+            margin-top: 10px;
+            color: #6c757d;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-book" style="font-size: 24px; color: #F8B540;"></i>
+                <h2>BiblioTech</h2>
+            </div>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li>
+                <a data-section="dashboard" class="active">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a data-section="ajouter-livre">
+                    <i class="fas fa-book-medical"></i>
+                    <span class="menu-text">Ajouter un Livre</span>
+                </a>
+            </li>
+            <li>
+                <a data-section="gerer-livres">
+                    <i class="fas fa-book-open"></i>
+                    <span class="menu-text">Gérer les Livres</span>
+                </a>
+            </li>
+            <li>
+                <a data-section="gerer-utilisateurs">
+                    <i class="fas fa-users"></i>
+                    <span class="menu-text">Gérer les Utilisateurs</span>
+                </a>
+            </li>
+            <li>
+                <a data-section="statistiques">
+                    <i class="fas fa-chart-bar"></i>
+                    <span class="menu-text">Statistiques</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">Tableau de Bord Admin</h1>
+            <div class="user-menu">
+                <span id="admin-user-info">Administrateur</span>
+                <a href="index.html" class="btn btn-logout">Retour au site</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- Section Dashboard -->
+            <div id="dashboard" class="section active">
+                <h2>Vue d'ensemble</h2>
+                
+                <div class="dashboard">
+                    <div class="card">
+                        <h3>Total Livres</h3>
+                        <div class="number" id="total-livres">0</div>
+                        <p>Dans la bibliothèque</p>
+                    </div>
+                    <div class="card">
+                        <h3>Utilisateurs</h3>
+                        <div class="number" id="total-utilisateurs">0</div>
+                        <p>Comptes créés</p>
+                    </div>
+                    <div class="card">
+                        <h3>Livres Audio</h3>
+                        <div class="number" id="total-audio">0</div>
+                        <p>Disponibles</p>
+                    </div>
+                    <div class="card">
+                        <h3>Nouveaux</h3>
+                        <div class="number" id="nouveaux-livres">0</div>
+                        <p>Livres ce mois</p>
+                    </div>
+                </div>
+                
+                <h2>Activité Récente</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Livre</th>
+                            <th>Type</th>
+                            <th>Date d'ajout</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-activity">
+                        <!-- L'activité récente sera ajoutée ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Section Ajouter Livre - MODIFIÉE -->
+            <div id="ajouter-livre" class="section">
+                <h2>Ajouter un Nouveau Livre</h2>
+                <form id="form-livre">
+                    <div class="form-group">
+                        <label for="titre_livre">Titre du livre *</label>
+                        <input type="text" id="titre_livre" name="titre" placeholder="Titre complet du livre" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="auteur_livre">Auteur *</label>
+                        <input type="text" id="auteur_livre" name="auteur" placeholder="Nom de l'auteur" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description_livre">Description *</label>
+                        <textarea id="description_livre" name="description" rows="3" placeholder="Résumé du livre" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="categorie_livre">Catégorie *</label>
+                        <select id="categorie_livre" name="categorie" required>
+                            <option value="">Sélectionnez une catégorie</option>
+                            <option value="Littérature">Littérature</option>
+                            <option value="Science-fiction">Science-fiction</option>
+                            <option value="Fantasy">Fantasy</option>
+                            <option value="Classique">Classique</option>
+                            <option value="Jeunesse">Jeunesse</option>
+                            <option value="Histoire">Histoire</option>
+                            <option value="Psychologie">Psychologie</option>
+                            <option value="Développement personnel">Développement personnel</option>
+                            <option value="Roman">Roman</option>
+                            <option value="Policier">Policier</option>
+                        </select>
+                    </div>
+                    
+                    <!-- NOUVEAU : UPLOAD D'IMAGE -->
+                    <div class="form-group">
+                        <label>Couverture du livre</label>
+                        <div class="image-upload-container">
+                            <div class="image-preview" id="image-preview">
+                                <div class="placeholder">
+                                    <i class="fas fa-book"></i>
+                                    <div>Aucune image</div>
+                                </div>
+                                <img id="preview-image" src="" alt="Aperçu de la couverture" style="display: none;">
+                                <button type="button" class="remove-image" id="remove-image">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <input type="file" id="image_upload" class="file-input" accept="image/*">
+                            <button type="button" class="upload-btn" id="upload-trigger">
+                                <i class="fas fa-upload"></i> Choisir une image
+                            </button>
+                            <div class="upload-info">
+                                Formats acceptés: JPG, PNG, WEBP (max 2MB)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Options de lecture</label>
+                        <div style="display: flex; gap: 20px; margin-top: 10px;">
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="checkbox" id="has_pdf" name="has_pdf" checked>
+                                <span>Disponible en PDF</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 5px;">
+                                <input type="checkbox" id="has_audio" name="has_audio">
+                                <span>Version audio disponible</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="statut_livre">Statut</label>
+                        <select id="statut_livre" name="statut" required>
+                            <option value="actif">Actif</option>
+                            <option value="inactif">Inactif</option>
+                            <option value="exclusif">Exclusif (réservé aux comptes premium)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fichier_pdf">Fichier PDF</label>
+                        <input type="file" id="fichier_pdf" name="fichier_pdf" accept=".pdf">
+                        <small>Format accepté: PDF (max 10MB)</small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="reset" class="btn" id="reset-form">Effacer</button>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-plus-circle"></i>
+                            Ajouter le Livre
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Section Gérer les Livres -->
+            <div id="gerer-livres" class="section">
+                <h2>Gestion des Livres</h2>
+                <div style="margin-bottom: 20px;">
+                    <input type="text" id="search-livres" placeholder="Rechercher un livre..." style="padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 5px;">
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Catégorie</th>
+                            <th>Type</th>
+                            <th>Statut</th>
+                            <th>Date d'ajout</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="livres-list">
+                        <!-- Les livres seront ajoutés ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Section Gérer les Utilisateurs -->
+            <div id="gerer-utilisateurs" class="section">
+                <h2>Gestion des Utilisateurs</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Email</th>
+                            <th>Date d'inscription</th>
+                            <th>Type</th>
+                            <th>Statut</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="utilisateurs-list">
+                        <!-- Les utilisateurs seront ajoutés ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Section Statistiques -->
+            <div id="statistiques" class="section">
+                <h2>Statistiques Détaillées</h2>
+                
+                <div class="dashboard">
+                    <div class="card">
+                        <h3>Livres par Catégorie</h3>
+                        <div class="number" id="stats-litterature">0</div>
+                        <p>Littérature</p>
+                    </div>
+                    <div class="card">
+                        <h3>Utilisateurs Actifs</h3>
+                        <div class="number" id="stats-utilisateurs-actifs">0</div>
+                        <p>Ce mois-ci</p>
+                    </div>
+                    <div class="card">
+                        <h3>Taux de Conversion</h3>
+                        <div class="number" id="stats-conversion">0%</div>
+                        <p>Visiteurs → Utilisateurs</p>
+                    </div>
+                </div>
+                
+                <h2>Top 5 des Livres les Plus Populaires</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Position</th>
+                            <th>Titre</th>
+                            <th>Auteur</th>
+                            <th>Lectures</th>
+                            <th>Écoutes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-livres">
+                        <!-- Les livres populaires seront ajoutés ici dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup de confirmation de suppression -->
+    <div class="popup-overlay" id="delete-confirm-popup">
+        <div class="popup">
+            <div class="popup-header">
+                <div class="popup-icon warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="popup-title">Confirmer la suppression</div>
+            </div>
+            <div class="popup-content">
+                Êtes-vous sûr de vouloir supprimer cet élément ? Cette action est irréversible.
+            </div>
+            <div class="popup-actions">
+                <button class="popup-btn cancel" id="cancel-delete">Annuler</button>
+                <button class="popup-btn confirm" id="confirm-delete">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de notification -->
+    <div class="toast" id="notification-toast">
+        <div class="toast-icon success">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title" id="toast-title">Succès</div>
+            <div class="toast-message" id="toast-message">L'opération a été réalisée avec succès.</div>
+        </div>
+        <button class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script>
+        // Gestion des données avec localStorage
+        const STORAGE_KEYS = {
+            LIVRES: 'admin_livres',
+            UTILISATEURS: 'admin_utilisateurs'
+        };
+
+        // Variables globales pour la suppression
+        let currentDeleteId = null;
+        let currentDeleteType = null;
+
+        // Variables pour la gestion des images
+        let currentImageFile = null;
+        let currentImageUrl = null;
+
+        // Initialiser les données si elles n'existent pas
+        function initializeData() {
+            if (!localStorage.getItem(STORAGE_KEYS.LIVRES)) {
+                localStorage.setItem(STORAGE_KEYS.LIVRES, JSON.stringify([]));
+            }
+            
+            // Synchroniser automatiquement avec les utilisateurs d'authentification
+            syncUsersWithAuth();
+        }
+
+        // Fonction pour synchroniser les utilisateurs avec le système d'authentification
+        function syncUsersWithAuth() {
+            // Récupérer les utilisateurs du système d'authentification principal
+            const authUsers = JSON.parse(localStorage.getItem('users')) || [];
+            const adminUsers = getUtilisateurs();
+            
+            // Synchroniser les utilisateurs
+            authUsers.forEach(authUser => {
+                const existingUser = adminUsers.find(adminUser => adminUser.email === authUser.email);
+                
+                if (!existingUser) {
+                    // Ajouter l'utilisateur manquant
+                    adminUsers.push({
+                        id: authUser.id || generateId(),
+                        name: authUser.name,
+                        email: authUser.email,
+                        createdAt: authUser.createdAt || new Date().toISOString(),
+                        lastLogin: authUser.lastLogin || null,
+                        type: 'utilisateur'
+                    });
+                } else {
+                    // Mettre à jour les informations existantes
+                    existingUser.name = authUser.name;
+                    existingUser.lastLogin = authUser.lastLogin || existingUser.lastLogin;
+                }
+            });
+            
+            saveUtilisateurs(adminUsers);
+            return adminUsers;
+        }
+
+        // Récupérer les données
+        function getLivres() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.LIVRES)) || [];
+        }
+
+        function getUtilisateurs() {
+            return JSON.parse(localStorage.getItem(STORAGE_KEYS.UTILISATEURS)) || [];
+        }
+
+        // Sauvegarder les données
+        function saveLivres(livres) {
+            localStorage.setItem(STORAGE_KEYS.LIVRES, JSON.stringify(livres));
+        }
+
+        function saveUtilisateurs(utilisateurs) {
+            localStorage.setItem(STORAGE_KEYS.UTILISATEURS, JSON.stringify(utilisateurs));
+        }
+
+        // Afficher les notifications toast
+        function showToast(title, message, type = 'success') {
+            const toast = document.getElementById('notification-toast');
+            const toastIcon = toast.querySelector('.toast-icon');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            
+            toastIcon.className = 'toast-icon ' + type;
+            toastIcon.innerHTML = type === 'success' ? 
+                '<i class="fas fa-check"></i>' : 
+                '<i class="fas fa-exclamation-triangle"></i>';
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        // Générer un ID unique
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // Fonction pour afficher l'aperçu de l'image
+        function showImagePreview(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('preview-image');
+                const placeholder = document.querySelector('.image-preview .placeholder');
+                const imagePreview = document.getElementById('image-preview');
+                
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+                imagePreview.classList.add('has-image');
+                
+                currentImageFile = file;
+                currentImageUrl = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Fonction pour supprimer l'image
+        function removeImage() {
+            const preview = document.getElementById('preview-image');
+            const placeholder = document.querySelector('.image-preview .placeholder');
+            const imagePreview = document.getElementById('image-preview');
+            const fileInput = document.getElementById('image_upload');
+            
+            preview.src = '';
+            preview.style.display = 'none';
+            placeholder.style.display = 'block';
+            imagePreview.classList.remove('has-image');
+            fileInput.value = '';
+            
+            currentImageFile = null;
+            currentImageUrl = null;
+        }
+
+        // Fonction pour générer une couverture par défaut
+        function generateDefaultCover(title, author) {
+            // Créer une image de placeholder avec le titre
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 300;
+            const ctx = canvas.getContext('2d');
+            
+            // Fond de couleur aléatoire mais cohérente
+            const colors = [
+                '#3498db', '#2ecc71', '#e74c3c', '#9b59b6', '#f39c12',
+                '#1abc9c', '#34495e', '#d35400', '#c0392b', '#16a085'
+            ];
+            const color = colors[Math.abs(title.length * author.length) % colors.length];
+            
+            // Dessiner le fond
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, 200, 300);
+            
+            // Ajouter le texte
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Diviser le titre en lignes si nécessaire
+            const words = title.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                if (ctx.measureText(testLine).width < 180) {
+                    currentLine = testLine;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            
+            // Afficher les lignes
+            const lineHeight = 20;
+            const startY = 150 - (lines.length * lineHeight) / 2;
+            
+            lines.forEach((line, index) => {
+                ctx.fillText(line, 100, startY + (index * lineHeight));
+            });
+            
+            // Ajouter le nom de l'auteur
+            ctx.font = '12px Arial';
+            ctx.fillText(author, 100, 250);
+            
+            return canvas.toDataURL();
+        }
+
+        // Mettre à jour les statistiques
+        function updateStats() {
+            const livres = getLivres();
+            const utilisateurs = getUtilisateurs();
+            
+            // Statistiques générales
+            document.getElementById('total-livres').textContent = livres.length;
+            document.getElementById('total-utilisateurs').textContent = utilisateurs.length;
+            document.getElementById('total-audio').textContent = livres.filter(l => l.hasAudio).length;
+            
+            // Livres ajoutés ce mois-ci
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const nouveauxLivres = livres.filter(l => {
+                const livreDate = new Date(l.dateCreation);
+                return livreDate.getMonth() === currentMonth && livreDate.getFullYear() === currentYear;
+            });
+            document.getElementById('nouveaux-livres').textContent = nouveauxLivres.length;
+            
+            // Mettre à jour l'activité récente
+            updateRecentActivity();
+            
+            // Mettre à jour les statistiques détaillées
+            updateDetailedStats();
+        }
+
+        // Mettre à jour l'activité récente
+        function updateRecentActivity() {
+            const livres = getLivres();
+            const tbody = document.getElementById('recent-activity');
+            tbody.innerHTML = '';
+            
+            // Prendre les 5 derniers livres ajoutés
+            const recentLivres = livres
+                .sort((a, b) => new Date(b.dateCreation) - new Date(a.dateCreation))
+                .slice(0, 5);
+            
+            if (recentLivres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">Aucune activité récente.</td></tr>';
+                return;
+            }
+            
+            recentLivres.forEach(livre => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${livre.titre}</td>
+                    <td>${livre.hasAudio ? 'PDF + Audio' : 'PDF'}</td>
+                    <td>${formatDate(livre.dateCreation)}</td>
+                    <td><span class="book-status status-${livre.statut}">${formatStatut(livre.statut)}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Mettre à jour les statistiques détaillées
+        function updateDetailedStats() {
+            const livres = getLivres();
+            const utilisateurs = getUtilisateurs();
+            
+            // Livres par catégorie
+            const livresLitterature = livres.filter(l => l.categorie === 'Littérature').length;
+            document.getElementById('stats-litterature').textContent = livresLitterature;
+            
+            // Utilisateurs actifs (ceux qui se sont connectés ce mois-ci)
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            const utilisateursActifs = utilisateurs.filter(u => {
+                if (u.lastLogin) {
+                    const loginDate = new Date(u.lastLogin);
+                    return loginDate.getMonth() === currentMonth && loginDate.getFullYear() === currentYear;
+                }
+                return false;
+            }).length;
+            document.getElementById('stats-utilisateurs-actifs').textContent = utilisateursActifs;
+            
+            // Taux de conversion (simulé)
+            document.getElementById('stats-conversion').textContent = '25%';
+            
+            // Top 5 des livres populaires
+            updateTopLivres();
+        }
+
+        // Mettre à jour le top 5 des livres
+        function updateTopLivres() {
+            const livres = getLivres();
+            const tbody = document.getElementById('top-livres');
+            tbody.innerHTML = '';
+            
+            // Simuler des données de popularité
+            const topLivres = livres
+                .map(livre => ({
+                    ...livre,
+                    lectures: Math.floor(Math.random() * 1000),
+                    ecoutes: livre.hasAudio ? Math.floor(Math.random() * 500) : 0
+                }))
+                .sort((a, b) => (b.lectures + b.ecoutes) - (a.lectures + a.ecoutes))
+                .slice(0, 5);
+            
+            if (topLivres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">Aucune donnée disponible.</td></tr>';
+                return;
+            }
+            
+            topLivres.forEach((livre, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${livre.titre}</td>
+                    <td>${livre.auteur}</td>
+                    <td>${livre.lectures}</td>
+                    <td>${livre.ecoutes}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Formater une date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR');
+        }
+
+        // Formater le statut
+        function formatStatut(statut) {
+            const statuts = {
+                'actif': 'Actif',
+                'inactif': 'Inactif',
+                'exclusif': 'Exclusif'
+            };
+            return statuts[statut] || statut;
+        }
+
+        // Afficher les livres
+        function displayLivres() {
+            const livres = getLivres();
+            const tbody = document.getElementById('livres-list');
+            tbody.innerHTML = '';
+            
+            if (livres.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7">Aucun livre enregistré.</td></tr>';
+                return;
+            }
+            
+            livres.forEach(livre => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${livre.titre}</td>
+                    <td>${livre.auteur}</td>
+                    <td>${livre.categorie}</td>
+                    <td>${livre.hasAudio ? 'PDF + Audio' : 'PDF'}</td>
+                    <td><span class="book-status status-${livre.statut}">${formatStatut(livre.statut)}</span></td>
+                    <td>${formatDate(livre.dateCreation)}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editLivre('${livre.id}')">Modifier</button>
+                        <button class="btn btn-delete" onclick="showDeleteConfirmPopup('${livre.id}', 'livre', '${livre.titre}')">Supprimer</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Afficher les utilisateurs
+        function displayUtilisateurs() {
+            const utilisateurs = getUtilisateurs();
+            const tbody = document.getElementById('utilisateurs-list');
+            tbody.innerHTML = '';
+            
+            if (utilisateurs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">Aucun utilisateur enregistré.</td></tr>';
+                return;
+            }
+            
+            utilisateurs.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${formatDate(user.createdAt)}</td>
+                    <td>Utilisateur</td>
+                    <td><span class="book-status status-active">Actif</span></td>
+                    <td>
+                        <button class="btn btn-delete" onclick="showDeleteConfirmPopup('${user.id}', 'utilisateur', '${user.name}')">Supprimer</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Ajouter un livre
+        function ajouterLivre(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const livres = getLivres();
+            
+            // Générer la couverture
+            let couvertureUrl;
+            if (currentImageUrl) {
+                couvertureUrl = currentImageUrl;
+            } else {
+                // Générer une couverture par défaut basée sur le titre et l'auteur
+                const titre = formData.get('titre');
+                const auteur = formData.get('auteur');
+                couvertureUrl = generateDefaultCover(titre, auteur);
+            }
+            
+            const nouveauLivre = {
+                id: generateId(),
+                titre: formData.get('titre'),
+                auteur: formData.get('auteur'),
+                description: formData.get('description'),
+                categorie: formData.get('categorie'),
+                couverture: couvertureUrl,
+                hasPDF: formData.get('has_pdf') === 'on',
+                hasAudio: formData.get('has_audio') === 'on',
+                statut: formData.get('statut'),
+                dateCreation: new Date().toISOString()
+            };
+            
+            livres.push(nouveauLivre);
+            saveLivres(livres);
+            
+            showToast('Succès', 'Livre ajouté avec succès!');
+            resetForm();
+            updateStats();
+            displayLivres();
+            
+            // Aller à la section des livres
+            document.querySelector('[data-section="gerer-livres"]').click();
+        }
+
+        // Modifier un livre
+        function editLivre(id) {
+            const livres = getLivres();
+            const livre = livres.find(l => l.id === id);
+            
+            if (!livre) return;
+            
+            // Remplir le formulaire avec les données existantes
+            document.getElementById('titre_livre').value = livre.titre;
+            document.getElementById('auteur_livre').value = livre.auteur;
+            document.getElementById('description_livre').value = livre.description;
+            document.getElementById('categorie_livre').value = livre.categorie;
+            document.getElementById('has_pdf').checked = livre.hasPDF;
+            document.getElementById('has_audio').checked = livre.hasAudio;
+            document.getElementById('statut_livre').value = livre.statut;
+            
+            // Afficher l'image existante
+            if (livre.couverture && !livre.couverture.includes('via.placeholder.com')) {
+                const preview = document.getElementById('preview-image');
+                const placeholder = document.querySelector('.image-preview .placeholder');
+                const imagePreview = document.getElementById('image-preview');
+                
+                preview.src = livre.couverture;
+                preview.style.display = 'block';
+                placeholder.style.display = 'none';
+                imagePreview.classList.add('has-image');
+                
+                currentImageUrl = livre.couverture;
+            }
+            
+            // Changer le formulaire en mode édition
+            const form = document.getElementById('form-livre');
+            const submitBtn = form.querySelector('.btn-submit');
+            
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                // Mettre à jour les données
+                livre.titre = document.getElementById('titre_livre').value;
+                livre.auteur = document.getElementById('auteur_livre').value;
+                livre.description = document.getElementById('description_livre').value;
+                livre.categorie = document.getElementById('categorie_livre').value;
+                livre.hasPDF = document.getElementById('has_pdf').checked;
+                livre.hasAudio = document.getElementById('has_audio').checked;
+                livre.statut = document.getElementById('statut_livre').value;
+                
+                // Mettre à jour l'image si une nouvelle a été sélectionnée
+                if (currentImageUrl) {
+                    livre.couverture = currentImageUrl;
+                }
+                
+                saveLivres(livres);
+                
+                showToast('Succès', 'Livre modifié avec succès!');
+                resetForm();
+                form.onsubmit = ajouterLivre;
+                submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Ajouter le Livre';
+                updateStats();
+                displayLivres();
+                
+                // Revenir à la section des livres
+                document.querySelector('[data-section="gerer-livres"]').click();
+            };
+            
+            // Changer le texte du bouton
+            submitBtn.innerHTML = '<i class="fas fa-edit"></i> Modifier le Livre';
+            
+            // Aller à la section d'ajout
+            document.querySelector('[data-section="ajouter-livre"]').click();
+            
+            showToast('Modification', 'Modifiez le formulaire et soumettez pour enregistrer les modifications.', 'warning');
+        }
+
+        // Fonction pour réinitialiser le formulaire
+        function resetForm() {
+            document.getElementById('form-livre').reset();
+            removeImage();
+            
+            // Réinitialiser le bouton d'ajout
+            const submitBtn = document.querySelector('.btn-submit');
+            submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Ajouter le Livre';
+            document.getElementById('form-livre').onsubmit = ajouterLivre;
+        }
+
+        // Afficher la popup de confirmation de suppression
+        function showDeleteConfirmPopup(id, type, name) {
+            currentDeleteId = id;
+            currentDeleteType = type;
+            
+            const popup = document.getElementById('delete-confirm-popup');
+            const content = popup.querySelector('.popup-content');
+            content.textContent = `Êtes-vous sûr de vouloir supprimer "${name}" ? Cette action est irréversible.`;
+            
+            popup.classList.add('active');
+        }
+
+        // Confirmer la suppression
+        function confirmDelete() {
+            if (currentDeleteId && currentDeleteType) {
+                if (currentDeleteType === 'livre') {
+                    const livres = getLivres();
+                    const filtered = livres.filter(l => l.id !== currentDeleteId);
+                    saveLivres(filtered);
+                    showToast('Succès', 'Livre supprimé avec succès!');
+                    displayLivres();
+                } else if (currentDeleteType === 'utilisateur') {
+                    const utilisateurs = getUtilisateurs();
+                    const filtered = utilisateurs.filter(u => u.id !== currentDeleteId);
+                    saveUtilisateurs(filtered);
+                    showToast('Succès', 'Utilisateur supprimé avec succès!');
+                    displayUtilisateurs();
+                }
+                
+                updateStats();
+                closeAllPopups();
+                
+                currentDeleteId = null;
+                currentDeleteType = null;
+            }
+        }
+
+        // Fermer toutes les popups
+        function closeAllPopups() {
+            document.querySelectorAll('.popup-overlay').forEach(popup => {
+                popup.classList.remove('active');
+            });
+        }
+
+        // JavaScript pour gérer la navigation entre sections
+        const menuLinks = document.querySelectorAll('.sidebar-menu a');
+        const sections = document.querySelectorAll('.section');
+        const pageTitle = document.querySelector('.page-title');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+                
+                // Mettre à jour les classes active pour le menu
+                menuLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Afficher la section correspondante
+                sections.forEach(sec => sec.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Mettre à jour le titre de la page
+                pageTitle.textContent = link.querySelector('.menu-text').textContent;
+            });
+        });
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeData();
+            updateStats();
+            displayLivres();
+            displayUtilisateurs();
+            
+            // Afficher l'utilisateur connecté
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                document.getElementById('admin-user-info').textContent = `Connecté en tant que: ${currentUser.name}`;
+            }
+            
+            // Gestion des formulaires
+            document.getElementById('form-livre').onsubmit = ajouterLivre;
+            
+            // Gestion de l'upload d'image
+            document.getElementById('upload-trigger').addEventListener('click', function() {
+                document.getElementById('image_upload').click();
+            });
+            
+            document.getElementById('image_upload').addEventListener('change', function(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const file = e.target.files[0];
+                    
+                    // Vérifier la taille du fichier (max 2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        showToast('Erreur', 'L\'image est trop volumineuse (max 2MB)', 'error');
+                        return;
+                    }
+                    
+                    // Vérifier le type de fichier
+                    if (!file.type.match('image.*')) {
+                        showToast('Erreur', 'Veuillez sélectionner une image valide', 'error');
+                        return;
+                    }
+                    
+                    showImagePreview(file);
+                }
+            });
+            
+            document.getElementById('remove-image').addEventListener('click', removeImage);
+            
+            // Réinitialiser le formulaire
+            document.getElementById('reset-form').addEventListener('click', resetForm);
+            
+            // Gestion des boutons de popup
+            document.getElementById('cancel-delete').addEventListener('click', closeAllPopups);
+            document.getElementById('confirm-delete').addEventListener('click', confirmDelete);
+            
+            // Fermer les popups en cliquant à l'extérieur
+            document.querySelectorAll('.popup-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAllPopups();
+                    }
+                });
+            });
+            
+            // Fermer le toast
+            document.querySelector('.toast-close').addEventListener('click', function() {
+                document.getElementById('notification-toast').classList.remove('show');
+            });
+            
+            // Recherche de livres
+            document.getElementById('search-livres').addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const livres = getLivres();
+                const filteredLivres = livres.filter(livre => 
+                    livre.titre.toLowerCase().includes(searchTerm) ||
+                    livre.auteur.toLowerCase().includes(searchTerm) ||
+                    livre.categorie.toLowerCase().includes(searchTerm)
+                );
+                
+                const tbody = document.getElementById('livres-list');
+                tbody.innerHTML = '';
+                
+                if (filteredLivres.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7">Aucun livre trouvé.</td></tr>';
+                    return;
+                }
+                
+                filteredLivres.forEach(livre => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${livre.titre}</td>
+                        <td>${livre.auteur}</td>
+                        <td>${livre.categorie}</td>
+                        <td>${livre.hasAudio ? 'PDF + Audio' : 'PDF'}</td>
+                        <td><span class="book-status status-${livre.statut}">${formatStatut(livre.statut)}</span></td>
+                        <td>${formatDate(livre.dateCreation)}</td>
+                        <td>
+                            <button class="btn btn-primary" onclick="editLivre('${livre.id}')">Modifier</button>
+                            <button class="btn btn-delete" onclick="showDeleteConfirmPopup('${livre.id}', 'livre', '${livre.titre}')">Supprimer</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

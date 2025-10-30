@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque - BiblioTech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #4a90e2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: none;
+            padding:8px 15px;
+            border: 2px solid #F8B540;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .logout-btn:hover {
+            text-decoration: none;
+            background: #F8B540;
+            color: #000;
+        }
+
+        /* Styles pour la lecture PDF */
+        .pdf-viewer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pdf-viewer-container {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pdf-viewer-header {
+            padding: 15px 20px;
+            background: #163D4C;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .pdf-viewer-content {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+        }
+
+        .pdf-page {
+            max-width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .close-pdf {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Styles pour les boutons de lecture */
+        .reading-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .reading-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .reading-option.pdf {
+            background: #3498db;
+            color: white;
+        }
+
+        .reading-option.audio {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .reading-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .reading-option:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Améliorations pour les cartes de livres */
+        .book-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Indicateur de disponibilité */
+        .availability-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .book-cover {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><img src="./image/LOGO.png"  style="width: 50px; height: 50px;" alt=""></div>
+                
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                
+                <nav id="main-nav" style="display: flex; justify-content: space-around;">
+                    <ul style="margin: 8px 10px 0 0;">
+                        <li><a href="index.html" class="nav-link">Accueil</a></li>
+                        <li><a href="bibliotheque.html" class="nav-link active">Bibliothèque</a></li>
+                    </ul>
+
+                    <div class="user-actions">
+                        <!-- État connecté -->
+                        <div id="user-view-index" class="hidden">
+                            <div class="user-menu">
+                                <button class="logout-btn" id="logout-btn-index">Déconnexion</button>
+                                <div class="user-info">
+                                    <div class="user-avatar" id="user-avatar-index">U</div>
+                                    <span id="user-name-index">Utilisateur</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="search-section">
+            <div class="container">
+                <div class="search-header">
+                    <div class="search-text">
+                        <h1>Notre bibliothèque</h1>
+                        <p>Parcourez notre collection complète de livres et commencez votre lecture.</p>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="library-search" placeholder="Rechercher un livre, un auteur, un genre...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-container">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Vue grille">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list" title="Vue liste">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="filter-controls">
+                        <div class="filter-group">
+                            <label for="category-filter">Catégorie :</label>
+                            <select id="category-filter" class="filter-select">
+                                <option value="all">Toutes les catégories</option>
+                                <option value="Littérature">Littérature</option>
+                                <option value="Science-fiction">Science-fiction</option>
+                                <option value="Fantasy">Fantasy</option>
+                                <option value="Classique">Classique</option>
+                                <option value="Jeunesse">Jeunesse</option>
+                                <option value="Psychologie">Psychologie</option>
+                                <option value="Histoire">Histoire</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="sort-filter">Trier par :</label>
+                            <select id="sort-filter" class="filter-select">
+                                <option value="title">Titre A-Z</option>
+                                <option value="title-desc">Titre Z-A</option>
+                                <option value="author">Auteur A-Z</option>
+                                <option value="new">Nouveautés</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="books-grid" id="library-books-container">
+                <!-- Les livres de la bibliothèque seront générés ici par JavaScript -->
+            </div>
+            
+            <div class="books-list" id="library-books-list" style="display: none;">
+                <!-- Les livres en vue liste seront générés ici par JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Lecteur PDF -->
+    <div class="pdf-viewer-overlay" id="pdf-viewer">
+        <div class="pdf-viewer-container">
+            <div class="pdf-viewer-header">
+                <h3 id="pdf-viewer-title">Titre du livre</h3>
+                <button class="close-pdf" id="close-pdf">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="pdf-viewer-content" id="pdf-content">
+                <!-- Le contenu PDF sera affiché ici -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Lecteur Audio -->
+    <div class="audio-player" id="audio-player">
+        <div class="player-controls">
+            <div class="player-info">
+                <img src="https://via.placeholder.com/50" alt="Couverture du livre" id="player-cover">
+                <div>
+                    <div class="player-title" id="player-title">Titre du livre</div>
+                    <div class="player-author" id="player-author">Auteur</div>
+                </div>
+            </div>
+            <div class="player-buttons">
+                <button id="prev-btn"><i class="fas fa-step-backward"></i></button>
+                <button id="play-btn"><i class="fas fa-play"></i></button>
+                <button id="next-btn"><i class="fas fa-step-forward"></i></button>
+            </div>
+            <div class="player-progress">
+                <div class="progress-bar">
+                    <div class="progress" id="audio-progress"></div>
+                </div>
+            </div>
+            <div class="player-time" id="player-time">0:00 / 0:00</div>
+            <button id="close-player"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BiblioTech</h3>
+                    <p>Votre bibliothèque numérique de référence pour les livres en PDF et audio.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="bibliotheque.html">Bibliothèque</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Aide</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Inscrivez-vous pour recevoir les dernières nouveautés.</p>
+                    <div class="search-container" style="max-width: 100%;">
+                        <input type="email" placeholder="Votre email">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BiblioTech. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./css/js/script.js"></script>
+    <script>
+        // Données de démonstration pour les livres
+        const libraryBooks = [
+            {
+                id: 1,
+                title: "L'Étranger",
+                author: "Albert Camus",
+                description: "Un roman philosophique qui explore l'absurdité de la vie à travers le personnage de Meursault.",
+                category: "Littérature",
+                cover: "https://via.placeholder.com/200x300/3498db/ffffff?text=L'Étranger",
+                hasPDF: true,
+                hasAudio: true,
+                pdfContent: [
+                    "CHAPITRE 1 - Aujourd'hui, maman est morte. Ou peut-être hier, je ne sais pas.",
+                    "J'ai reçu un télégramme de l'asile : « Mère décédée. Enterrement demain. Sentiments distingués. »",
+                    "Cela ne veut rien dire. C'était peut-être hier.",
+                    "L'asile de vieillards est à Marengo, à quatre-vingts kilomètres d'Alger.",
+                    "Je prendrai l'autobus à deux heures et j'arriverai dans l'après-midi.",
+                    "Ainsi, je pourrai veiller et je rentrerai demain soir."
+                ],
+                audioFile: "https://www.soundjay.com/button/beep-07.wav" // Fichier audio de démonstration
+            },
+            {
+                id: 2,
+                title: "1984",
+                author: "George Orwell",
+                description: "Une dystopie célèbre sur un régime totalitaire qui surveille chaque aspect de la vie des citoyens.",
+                category: "Science-fiction",
+                cover: "https://via.placeholder.com/200x300/e74c3c/ffffff?text=1984",
+                hasPDF: true,
+                hasAudio: false,
+                pdfContent: [
+                    "CHAPITRE 1 - C'était une journée froide et claire d'avril, et les horloges sonnaient treize heures.",
+                    "Winston Smith, le menton collé sur la poitrine pour éviter le vent mauvais, se glissa rapidement.",
+                    "Big Brother vous regarde, répétait l'affiche au bas de l'immeuble.",
+                    "Le télécran continuait de grésiller derrière lui."
+                ]
+            },
+            {
+                id: 3,
+                title: "Le Petit Prince",
+                author: "Antoine de Saint-Exupéry",
+                description: "Un conte poétique et philosophique sous l'apparence d'un livre pour enfants.",
+                category: "Jeunesse",
+                cover: "https://via.placeholder.com/200x300/2ecc71/ffffff?text=Le+Petit+Prince",
+                hasPDF: true,
+                hasAudio: true,
+                pdfContent: [
+                    "CHAPITRE 1 - Lorsque j'avais six ans, j'ai vu une fois une magnifique image.",
+                    "Ça représentait un serpent boa qui avalait un fauve.",
+                    "J'ai alors réfléchi profondément sur les aventures de la jungle."
+                ],
+                audioFile: "https://www.soundjay.com/button/beep-07.wav"
+            },
+            {
+                id: 4,
+                title: "Harry Potter à l'École des Sorciers",
+                author: "J.K. Rowling",
+                description: "Le premier tome de la saga fantastique qui a captivé des millions de lecteurs à travers le monde.",
+                category: "Fantasy",
+                cover: "https://via.placeholder.com/200x300/f39c12/ffffff?text=Harry+Potter",
+                hasPDF: true,
+                hasAudio: true,
+                pdfContent: [
+                    "CHAPITRE 1 - Mr et Mrs Dursley, qui habitaient au 4, Privet Drive, étaient fiers.",
+                    "Ils étaient les derniers gens à qui on pourrait s'attendre à voir mêlés.",
+                    "Mr Dursley dirigeait la société Grunnings, qui fabriquait des perceuses."
+                ],
+                audioFile: "https://www.soundjay.com/button/beep-07.wav"
+            }
+        ];
+
+        // Variables pour la gestion audio
+        let currentAudio = null;
+        let isPlaying = false;
+        let currentBookIndex = 0;
+
+        // Vérifier si l'utilisateur est connecté au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatusIndex();
+            loadLibraryBooks();
+            setupEventListeners();
+            
+            // Gestion de la déconnexion
+            document.getElementById('logout-btn-index').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                checkLoginStatusIndex();
+                alert('Vous avez été déconnecté. Redirection vers la page de connexion...');
+                
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 1000);
+            });
+        });
+
+        function checkLoginStatusIndex() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const userView = document.getElementById('user-view-index');
+            const userName = document.getElementById('user-name-index');
+            const userAvatar = document.getElementById('user-avatar-index');
+            
+            if (user) {
+                if (userView) userView.classList.remove('hidden');
+                if (userName) userName.textContent = user.name;
+                if (userAvatar) userAvatar.textContent = user.name.charAt(0).toUpperCase();
+            } else {
+                if (userView) userView.classList.add('hidden');
+                // Rediriger vers la page de connexion si non connecté
+                setTimeout(() => {
+                    window.location.href = 'home.html';
+                }, 500);
+            }
+        }
+
+        function loadLibraryBooks() {
+            const gridContainer = document.getElementById('library-books-container');
+            const listContainer = document.getElementById('library-books-list');
+            
+            gridContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+            
+            libraryBooks.forEach(book => {
+                // Vue grille
+                const gridBook = createBookCard(book, 'grid');
+                gridContainer.appendChild(gridBook);
+                
+                // Vue liste
+                const listBook = createBookCard(book, 'list');
+                listContainer.appendChild(listBook);
+            });
+        }
+
+        function createBookCard(book, viewType) {
+            const bookElement = document.createElement('div');
+            bookElement.className = viewType === 'grid' ? 'book-card' : 'book-list-item';
+            bookElement.innerHTML = `
+                <div class="book-cover">
+                    <img src="${book.cover}" alt="${book.title}">
+                    ${book.hasPDF || book.hasAudio ? '<span class="availability-badge">Disponible</span>' : ''}
+                </div>
+                <div class="book-info">
+                    <div class="book-title">${book.title}</div>
+                    <div class="book-author">${book.author}</div>
+                    <div class="book-description">${book.description}</div>
+                    <div class="reading-options">
+                        ${book.hasPDF ? 
+                            `<button class="reading-option pdf" onclick="openPDF(${book.id})">
+                                <i class="fas fa-book-open"></i> Lire PDF
+                            </button>` : 
+                            '<button class="reading-option pdf" disabled><i class="fas fa-book-open"></i> PDF indisponible</button>'
+                        }
+                        ${book.hasAudio ? 
+                            `<button class="reading-option audio" onclick="playAudio(${book.id})">
+                                <i class="fas fa-headphones"></i> Écouter
+                            </button>` : 
+                            '<button class="reading-option audio" disabled><i class="fas fa-headphones"></i> Audio indisponible</button>'
+                        }
+                    </div>
+                </div>
+            `;
+            
+            return bookElement;
+        }
+
+        function setupEventListeners() {
+            // Gestion de la vue (grille/liste)
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    if (view === 'grid') {
+                        document.getElementById('library-books-container').style.display = 'grid';
+                        document.getElementById('library-books-list').style.display = 'none';
+                    } else {
+                        document.getElementById('library-books-container').style.display = 'none';
+                        document.getElementById('library-books-list').style.display = 'block';
+                    }
+                });
+            });
+
+            // Fermeture du lecteur PDF
+            document.getElementById('close-pdf').addEventListener('click', closePDF);
+
+            // Fermeture du lecteur audio
+            document.getElementById('close-player').addEventListener('click', closeAudio);
+
+            // Contrôles audio
+            document.getElementById('play-btn').addEventListener('click', toggleAudio);
+            document.getElementById('prev-btn').addEventListener('click', prevAudio);
+            document.getElementById('next-btn').addEventListener('click', nextAudio);
+
+            // Recherche en temps réel
+            document.getElementById('library-search').addEventListener('input', function(e) {
+                filterBooks(e.target.value);
+            });
+
+            // Filtres
+            document.getElementById('category-filter').addEventListener('change', applyFilters);
+            document.getElementById('sort-filter').addEventListener('change', applyFilters);
+        }
+
+        function openPDF(bookId) {
+            const book = libraryBooks.find(b => b.id === bookId);
+            if (!book) return;
+
+            const pdfViewer = document.getElementById('pdf-viewer');
+            const pdfTitle = document.getElementById('pdf-viewer-title');
+            const pdfContent = document.getElementById('pdf-content');
+
+            pdfTitle.textContent = book.title;
+            pdfContent.innerHTML = book.pdfContent.map(page => `
+                <div class="pdf-page">
+                    <p>${page}</p>
+                </div>
+            `).join('');
+
+            pdfViewer.style.display = 'flex';
+        }
+
+        function closePDF() {
+            document.getElementById('pdf-viewer').style.display = 'none';
+        }
+
+        function playAudio(bookId) {
+            const book = libraryBooks.find(b => b.id === bookId);
+            if (!book || !book.audioFile) return;
+
+            // Arrêter l'audio en cours
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+
+            // Créer un nouvel élément audio
+            currentAudio = new Audio(book.audioFile);
+            currentBookIndex = libraryBooks.findIndex(b => b.id === bookId);
+
+            // Mettre à jour l'interface du lecteur
+            document.getElementById('player-title').textContent = book.title;
+            document.getElementById('player-author').textContent = book.author;
+            document.getElementById('player-cover').src = book.cover;
+
+            // Afficher le lecteur
+            document.getElementById('audio-player').style.display = 'block';
+
+            // Démarrer la lecture
+            currentAudio.play();
+            isPlaying = true;
+            document.getElementById('play-btn').innerHTML = '<i class="fas fa-pause"></i>';
+
+            // Mettre à jour la progression
+            currentAudio.addEventListener('timeupdate', updateProgress);
+            currentAudio.addEventListener('ended', audioEnded);
+        }
+
+        function toggleAudio() {
+            if (!currentAudio) return;
+
+            if (isPlaying) {
+                currentAudio.pause();
+                document.getElementById('play-btn').innerHTML = '<i class="fas fa-play"></i>';
+            } else {
+                currentAudio.play();
+                document.getElementById('play-btn').innerHTML = '<i class="fas fa-pause"></i>';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function closeAudio() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio = null;
+            }
+            document.getElementById('audio-player').style.display = 'none';
+            isPlaying = false;
+        }
+
+        function prevAudio() {
+            let newIndex = currentBookIndex - 1;
+            if (newIndex < 0) newIndex = libraryBooks.length - 1;
+            
+            const prevBook = libraryBooks[newIndex];
+            if (prevBook && prevBook.hasAudio) {
+                playAudio(prevBook.id);
+            }
+        }
+
+        function nextAudio() {
+            let newIndex = currentBookIndex + 1;
+            if (newIndex >= libraryBooks.length) newIndex = 0;
+            
+            const nextBook = libraryBooks[newIndex];
+            if (nextBook && nextBook.hasAudio) {
+                playAudio(nextBook.id);
+            }
+        }
+
+        function updateProgress() {
+            if (!currentAudio) return;
+
+            const progress = (currentAudio.currentTime / currentAudio.duration) * 100;
+            document.getElementById('audio-progress').style.width = progress + '%';
+
+            const currentTime = formatTime(currentAudio.currentTime);
+            const duration = formatTime(currentAudio.duration);
+            document.getElementById('player-time').textContent = `${currentTime} / ${duration}`;
+        }
+
+        function audioEnded() {
+            isPlaying = false;
+            document.getElementById('play-btn').innerHTML = '<i class="fas fa-play"></i>';
+            // Lecture automatique du livre suivant
+            setTimeout(nextAudio, 2000);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function filterBooks(searchTerm) {
+            const filteredBooks = libraryBooks.filter(book => 
+                book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            displayFilteredBooks(filteredBooks);
+        }
+
+        function applyFilters() {
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+            const searchTerm = document.getElementById('library-search').value;
+            
+            let filteredBooks = libraryBooks.filter(book => 
+                (category === 'all' || book.category === category) &&
+                (book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                 book.description.toLowerCase().includes(searchTerm.toLowerCase()))
+            );
+
+            // Trier les livres
+            switch(sort) {
+                case 'title':
+                    filteredBooks.sort((a, b) => a.title.localeCompare(b.title));
+                    break;
+                case 'title-desc':
+                    filteredBooks.sort((a, b) => b.title.localeCompare(a.title));
+                    break;
+                case 'author':
+                    filteredBooks.sort((a, b) => a.author.localeCompare(b.author));
+                    break;
+                case 'new':
+                    // Pour l'exemple, on considère que les livres avec ID plus élevé sont plus récents
+                    filteredBooks.sort((a, b) => b.id - a.id);
+                    break;
+            }
+
+            displayFilteredBooks(filteredBooks);
+        }
+
+        function displayFilteredBooks(books) {
+            const gridContainer = document.getElementById('library-books-container');
+            const listContainer = document.getElementById('library-books-list');
+            
+            gridContainer.innerHTML = '';
+            listContainer.innerHTML = '';
+            
+            if (books.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'no-results';
+                noResults.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <i class="fas fa-search" style="font-size: 48px; color: #bdc3c7; margin-bottom: 20px;"></i>
+                        <h3>Aucun livre trouvé</h3>
+                        <p>Essayez de modifier vos critères de recherche ou de filtrage.</p>
+                    </div>
+                `;
+                gridContainer.appendChild(noResults);
+                listContainer.appendChild(noResults.cloneNode(true));
+                return;
+            }
+            
+            books.forEach(book => {
+                const gridBook = createBookCard(book, 'grid');
+                const listBook = createBookCard(book, 'list');
+                
+                gridContainer.appendChild(gridBook);
+                listContainer.appendChild(listBook);
+            });
+        }
+
+        // Exposer les fonctions globalement pour les boutons onclick
+        window.openPDF = openPDF;
+        window.playAudio = playAudio;
+    </script>
+</body>
+</html>

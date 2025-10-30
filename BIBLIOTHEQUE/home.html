@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque en Ligne - Livres Audio & PDF</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        /* Styles pour les modales de connexion/inscription */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+        }
+        
+        .modal-title {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        
+        .form-switch {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-switch a {
+            color: #4a90e2;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        
+        .form-switch a:hover {
+            color: #357abd;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: #4a90e2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            background: none;
+            border: none;
+            color: #4a90e2;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn:hover {
+            text-decoration: underline;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .security-notice {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo"><img src="./image/LOGO.png"  style="width: 50px; height: 50px;" alt=""></div>
+                
+                <div class="user-actions">
+                    <!-- État non connecté -->
+                    <div id="guest-view">
+                        <a href="#" class="btn" id="login-btn">Se connecter</a>
+                        <a href="#" class="btn" id="register-btn">Créer un compte</a>
+                    </div>
+                    
+                    <!-- État connecté -->
+                    <div id="user-view" class="hidden">
+                        <div class="user-menu">
+                            <div class="user-info">
+                                <div class="user-avatar" id="user-avatar">U</div>
+                                <span id="user-name">Utilisateur</span>
+                            </div>
+                            <button class="logout-btn" id="logout-btn">Déconnexion</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page d'accueil -->
+    <main>
+        <!-- Carousel -->
+        <section class="carousel">
+            <div class="carousel-slides">
+                <div class="carousel-slide">
+                    <img src="./image/header (5).jpg" alt="Lecture">
+                    <div class="carousel-content">
+                        <h1>Découvrez notre bibliothèque numérique</h1>
+                        <p>Accédez à des milliers de livres en format PDF et audio. Lisez, écoutez, découvrez.</p>
+                        <a href="#" class="btn" id="carousel-register-btn">Créer un compte</a>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1528&q=80" alt="Livres">
+                    <div class="carousel-content">
+                        <h1>Des livres pour tous les goûts</h1>
+                        <p>Romans, essais, science-fiction, développement personnel... Trouvez votre prochaine lecture.</p>
+                        <a href="#" class="btn" id="carousel-login-btn">Commencer maintenant</a>
+                    </div>
+                </div>
+                <div class="carousel-slide">
+                    <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Écoute">
+                    <div class="carousel-content">
+                        <h1>Écoutez vos livres préférés</h1>
+                        <p>Notre collection de livres audio vous permet de profiter de la littérature où que vous soyez.</p>
+                        <a href="#" class="btn" id="carousel-join-btn">Rejoindre BiblioTech</a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn carousel-prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-btn carousel-next"><i class="fas fa-chevron-right"></i></button>
+            <div class="carousel-nav">
+                <div class="carousel-dot active"></div>
+                <div class="carousel-dot"></div>
+                <div class="carousel-dot"></div>
+            </div>
+        </section>
+
+       <!-- Livres populaires -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Livres Populaires</h2>
+                <div class="books-grid" id="popular-books-container">
+                    <!-- Livres statiques -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <img src="./image/header (2).jpg" alt="L'Étranger">
+                            <span class="pdf-badge">PDF</span>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">L'Étranger</div>
+                            <div class="book-author">Albert Camus</div>
+                            <div class="book-description">Un roman philosophique qui explore l'absurdité de la vie à travers le personnage de Meursault.</div>
+                            <div class="reading-options">
+                                <button class="reading-option pdf" disabled>
+                                    <i class="fas fa-book-open"></i> Disponible en bibliothèque
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <img src="./image/header (2).jpg" alt="1984">
+                            <span class="pdf-badge">PDF</span>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">1984</div>
+                            <div class="book-author">George Orwell</div>
+                            <div class="book-description">Une dystopie célèbre sur un régime totalitaire qui surveille chaque aspect de la vie des citoyens.</div>
+                            <div class="reading-options">
+                                <button class="reading-option pdf" disabled>
+                                    <i class="fas fa-book-open"></i> Disponible en bibliothèque
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <img src="./image/header (2).jpg" alt="Le Petit Prince">
+                            <span class="pdf-badge">PDF</span>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Le Petit Prince</div>
+                            <div class="book-author">Antoine de Saint-Exupéry</div>
+                            <div class="book-description">Un conte poétique et philosophique sous l'apparence d'un livre pour enfants.</div>
+                            <div class="reading-options">
+                                <button class="reading-option pdf" disabled>
+                                    <i class="fas fa-book-open"></i> Disponible en bibliothèque
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <img src="./image/header (2).jpg" alt="Harry Potter">
+                            <span class="pdf-badge">PDF</span>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Harry Potter à l'École des Sorciers</div>
+                            <div class="book-author">J.K. Rowling</div>
+                            <div class="book-description">Le premier tome de la saga fantastique qui a captivé des millions de lecteurs à travers le monde.</div>
+                            <div class="reading-options">
+                                <button class="reading-option pdf" disabled>
+                                    <i class="fas fa-book-open"></i> Disponible en bibliothèque
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pourquoi nous choisir -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Pourquoi Nous Choisir</h2>
+                <div class="features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="feature-title">Large Sélection</h3>
+                        <p>Plus de 10 000 livres soigneusement sélectionnés dans tous les genres littéraires.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <h3 class="feature-title">Livres Audio</h3>
+                        <p>Profitez de vos livres préférés en format audio, parfaits pour les déplacements.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Accessible Partout</h3>
+                        <p>Accédez à votre bibliothèque depuis n'importe quel appareil, à tout moment.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-friends"></i>
+                        </div>
+                        <h3 class="feature-title">Communauté</h3>
+                        <p>Rejoignez une communauté de lecteurs passionnés et partagez vos découvertes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Témoignages -->
+        <section class="section testimonials">
+            <div class="container">
+                <h2 class="section-title">Ce Que Disent Nos Lecteurs</h2>
+                <div class="testimonial-cards">
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "BiblioTech a révolutionné ma façon de lire. Je peux maintenant emporter toute ma bibliothèque avec moi partout où je vais. Les livres audio sont particulièrement pratiques pendant mes trajets."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Marie L.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Marie L.</h4>
+                                <p>Abonnée depuis 2021</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "En tant qu'étudiante, BiblioTech m'a permis d'accéder à des ouvrages spécialisés sans me ruiner. La qualité des livres numériques est excellente et l'interface très intuitive."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/men/54.jpg" alt="Thomas D.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Thomas D.</h4>
+                                <p>Étudiant en littérature</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-text">
+                            "Je suis un grand lecteur et BiblioTech m'a offert une expérience exceptionnelle. La variété des genres et la qualité de la plateforme dépassent toutes mes attentes. Je recommande vivement !"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="testimonial-avatar">
+                                <img src="https://randomuser.me/api/portraits/women/67.jpg" alt="Sophie M.">
+                            </div>
+                            <div class="testimonial-info">
+                                <h4>Sophie M.</h4>
+                                <p>Lectrice assidue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- À propos -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">À Propos de BiblioTech</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>BiblioTech est une plateforme de bibliothèque numérique innovante qui propose une vaste collection de livres en format PDF et audio. Notre mission est de rendre la littérature accessible à tous, partout et à tout moment.</p>
+                        <p>Fondée en 2020, notre plateforme compte déjà plus de 50 000 utilisateurs satisfaits et une collection de plus de 10 000 titres soigneusement sélectionnés.</p>
+                        <p>Que vous soyez un lecteur assidu ou occasionnel, un étudiant ou un professionnel, BiblioTech a quelque chose à vous offrir. Notre interface intuitive et nos fonctionnalités avancées vous permettent de personnaliser votre expérience de lecture.</p>
+                        <a href="#" class="btn" style="margin-top: 1.5rem;" id="about-register-btn">Créer mon compte gratuit</a>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Bibliothèque">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modale de connexion -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-login">&times;</span>
+            <h2 class="modal-title">Se connecter</h2>
+            
+            <!-- Message de succès après inscription -->
+            <div id="login-success-message" class="success-message hidden">
+                Votre compte a été créé avec succès ! Veuillez vous connecter.
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Mot de passe</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Se connecter</button>
+                </div>
+                <div class="form-switch">
+                    Pas encore de compte ? <a href="#" id="switch-to-register">S'inscrire</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale d'inscription -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-register">&times;</span>
+            <h2 class="modal-title">Créer un compte</h2>
+            
+            <!-- Note de sécurité -->
+            <div class="security-notice">
+                <i class="fas fa-shield-alt"></i> Pour des raisons de sécurité, vous devrez vous connecter après l'inscription.
+            </div>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nom complet</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Mot de passe</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirmer le mot de passe</label>
+                    <input type="password" id="register-confirm" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">S'inscrire</button>
+                </div>
+                <div class="form-switch">
+                    Déjà un compte ? <a href="#" id="switch-to-login">Se connecter</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>BiblioTech</h3>
+                    <p>Votre bibliothèque numérique de référence pour les livres en PDF et audio.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Liens rapides</h3>
+                    <ul>
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="#" id="footer-login-btn">Se connecter</a></li>
+                        <li><a href="#" id="footer-register-btn">Créer un compte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Aide</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Inscrivez-vous pour recevoir les dernières nouveautés.</p>
+                    <div class="search-container" style="max-width: 100%;">
+                        <input type="email" placeholder="Votre email">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 BiblioTech. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./css/js/script.js"></script>
+    <script>
+        // Éléments DOM
+        const loginModal = document.getElementById('login-modal');
+        const registerModal = document.getElementById('register-modal');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const closeLogin = document.getElementById('close-login');
+        const closeRegister = document.getElementById('close-register');
+        const switchToRegister = document.getElementById('switch-to-register');
+        const switchToLogin = document.getElementById('switch-to-login');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const guestView = document.getElementById('guest-view');
+        const userView = document.getElementById('user-view');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+        const logoutBtn = document.getElementById('logout-btn');
+        const loginSuccessMessage = document.getElementById('login-success-message');
+        
+        // Boutons supplémentaires pour ouvrir les modales
+        const carouselRegisterBtn = document.getElementById('carousel-register-btn');
+        const carouselLoginBtn = document.getElementById('carousel-login-btn');
+        const carouselJoinBtn = document.getElementById('carousel-join-btn');
+        const bookLoginBtn = document.getElementById('book-login-btn');
+        const bookLoginBtn2 = document.getElementById('book-login-btn2');
+        const bookLoginBtn3 = document.getElementById('book-login-btn3');
+        const bookLoginBtn4 = document.getElementById('book-login-btn4');
+        const bottomRegisterBtn = document.getElementById('bottom-register-btn');
+        const aboutRegisterBtn = document.getElementById('about-register-btn');
+        const footerLoginBtn = document.getElementById('footer-login-btn');
+        const footerRegisterBtn = document.getElementById('footer-register-btn');
+
+        // Ouvrir la modale de connexion
+        function openLoginModal() {
+            loginModal.style.display = 'flex';
+            // Réinitialiser le formulaire
+            loginForm.reset();
+        }
+
+        // Ouvrir la modale d'inscription
+        function openRegisterModal() {
+            registerModal.style.display = 'flex';
+            // Réinitialiser le formulaire
+            registerForm.reset();
+            // Cacher le message de succès
+            loginSuccessMessage.classList.add('hidden');
+        }
+
+        // Fermer les modales
+        function closeModals() {
+            loginModal.style.display = 'none';
+            registerModal.style.display = 'none';
+        }
+
+        // Vérifier si l'utilisateur est connecté
+        function checkLoginStatus() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (user) {
+                // Afficher l'interface utilisateur connecté
+                guestView.classList.add('hidden');
+                userView.classList.remove('hidden');
+                userName.textContent = user.name;
+                userAvatar.textContent = user.name.charAt(0).toUpperCase();
+            } else {
+                // Afficher l'interface invité
+                guestView.classList.remove('hidden');
+                userView.classList.add('hidden');
+            }
+        }
+
+        // Gestion de la connexion
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            // Récupérer les utilisateurs du localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Vérifier si l'utilisateur existe
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Stocker l'utilisateur connecté
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                // Fermer la modale
+                closeModals();
+                
+                // Mettre à jour l'interface
+                checkLoginStatus();
+                
+                // REDIRECTION VERS INDEX.HTML APRÈS CONNEXION RÉUSSIE
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1000);
+                
+                // Afficher un message de succès
+                alert(`Bienvenue ${user.name} ! Redirection en cours...`);
+                
+                // Cacher le message de succès d'inscription
+                loginSuccessMessage.classList.add('hidden');
+            } else {
+                alert('Email ou mot de passe incorrect.');
+            }
+        });
+
+        // Gestion de l'inscription
+        registerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            
+            // Vérifier que les mots de passe correspondent
+            if (password !== confirmPassword) {
+                alert('Les mots de passe ne correspondent pas.');
+                return;
+            }
+            
+            // Récupérer les utilisateurs existants
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Vérifier si l'email est déjà utilisé
+            if (users.find(u => u.email === email)) {
+                alert('Cet email est déjà utilisé.');
+                return;
+            }
+            
+            // Ajouter le nouvel utilisateur
+            const newUser = { 
+                id: Date.now().toString(),
+                name, 
+                email, 
+                password,
+                createdAt: new Date().toISOString()
+            };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Fermer la modale d'inscription
+            closeModals();
+            
+            // Ouvrir la modale de connexion
+            openLoginModal();
+            
+            // Afficher le message de succès dans la modale de connexion
+            loginSuccessMessage.classList.remove('hidden');
+            
+            // Pré-remplir l'email dans le formulaire de connexion
+            document.getElementById('login-email').value = email;
+            
+            // Afficher un message d'information
+            alert(`Votre compte a été créé avec succès ${name} ! Veuillez vous connecter pour accéder à votre compte.`);
+        });
+
+        // Gestion de la déconnexion
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            checkLoginStatus();
+            alert('Vous avez été déconnecté.');
+        });
+
+        // Événements pour ouvrir/fermer les modales
+        loginBtn.addEventListener('click', openLoginModal);
+        registerBtn.addEventListener('click', openRegisterModal);
+        closeLogin.addEventListener('click', closeModals);
+        closeRegister.addEventListener('click', closeModals);
+        switchToRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeModals();
+            openRegisterModal();
+        });
+        switchToLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeModals();
+            openLoginModal();
+        });
+        
+        // Événements pour les boutons supplémentaires
+        carouselRegisterBtn.addEventListener('click', openRegisterModal);
+        carouselLoginBtn.addEventListener('click', openLoginModal);
+        carouselJoinBtn.addEventListener('click', openRegisterModal);
+        bookLoginBtn.addEventListener('click', openLoginModal);
+        bookLoginBtn2.addEventListener('click', openLoginModal);
+        bookLoginBtn3.addEventListener('click', openLoginModal);
+        bookLoginBtn4.addEventListener('click', openLoginModal);
+        bottomRegisterBtn.addEventListener('click', openRegisterModal);
+        aboutRegisterBtn.addEventListener('click', openRegisterModal);
+        footerLoginBtn.addEventListener('click', openLoginModal);
+        footerRegisterBtn.addEventListener('click', openRegisterModal);
+
+        // Fermer la modale en cliquant en dehors
+        window.addEventListener('click', function(e) {
+            if (e.target === loginModal) {
+                closeModals();
+            }
+            if (e.target === registerModal) {
+                closeModals();
+            }
+        });
+
+        // Vérifier l'état de connexion au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+        });
+    </script>
+</body>
+</html>
