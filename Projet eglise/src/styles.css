@@ -17,6 +17,10 @@ body {
     line-height: 1.6;
     color: #333;
 }
+.menu-toggle.active i::before {
+    content: "\f00d"; /* icône X FontAwesome */
+}
+
 header {
     background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
     color: var(--white);
